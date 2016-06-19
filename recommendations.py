@@ -76,7 +76,19 @@ def sim_pearson(prefs,p1,p2):
 
 print(sim_pearson(critics,'Lisa Rose','Gene Seymour'))
 
+# Ранжування критиків
 
+# повертає список найкращих співпадінь для людини зі словника prefs
+# кількість результатів і функція подібності - необов'язкові параметри
+def topMatches(prefs,person,n=5,similarity=sim_pearson):
+	scores=[(similarity(prefs,person,other),other) for other in prefs if other!=person]
+
+	# відсортувати список по спаду оцінок
+	scores.sort()
+	scores.reverse()
+	return scores[0:n]
+
+print(topMatches(critics,'Toby',n=3))
 
 
 
