@@ -90,7 +90,39 @@ def topMatches(prefs,person,n=5,similarity=sim_pearson):
 
 print(topMatches(critics,'Toby',n=3))
 
+#отримати рекомендації для конкретної людини, 
+#використовуючи зважені середні оцінки, які поставили всі інші користувачі
 
+def getRecommendations(prefs,person,similarity=sim_pearson):
+	totals={}
+	simSums={}
+	for other in prefs:
+		#непотрібно порівнювати мене зі мною
+		if other==person: continue
+		sim=similarity(prefs,person,other)
+
+		#ігнорувати нульові та від'ємні значення
+		if sim<=0: continue
+		for item in prefs[other]:
+			#оцінювати лише фільми, які я ще не дивилась
+			if item not in prefs[person] or prefs[person][item]==0:
+				# Коефіцієнт подібності*Оцінку
+				totals.setdefault(item,0)
+				totals[item]+=prefs[other][item]*sim 
+				# Сума коефіцієнтів подібності
+				simSums.setdefault(item,0)
+				simSums[item]+=sim
+
+	# створити нормалізований список
+	rankings=[(total/simSums[item],item) for item,total in totals.items()]
+
+	# повернути відсортований список
+	rankings.sort()
+	rankings.reverse()
+	return rankings
+
+print(getRecommendations(critics,'Toby',))
+print(getRecommendations(critics,'Toby',similarity=sim_distance))
 
 
 
