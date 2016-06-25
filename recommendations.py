@@ -124,6 +124,27 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
 print(getRecommendations(critics,'Toby',))
 print(getRecommendations(critics,'Toby',similarity=sim_distance))
 
+def transformPrefs(prefs):
+	result={}
+	for person in prefs:
+		for item in prefs[person]:
+			result.setdefault(item,{})
+
+			# поміняти місцями людину і предмет
+			result[item][person]=prefs[person][item]
+
+	return result
+
+movies= transformPrefs(critics)
+print(" ")
+print(topMatches(movies,'Superman Returns'))
+print(getRecommendations(movies,'Just My Luck'))
+print(" ")
+print(" ")
+print(critics)
+print(" ")
+print(movies)
+
 
 
 
