@@ -138,6 +138,7 @@ def transformPrefs(prefs):
 movies= transformPrefs(critics)
 print(" ")
 print(topMatches(movies,'Superman Returns'))
+#пошук рекомендованих критикыв для фільму
 print(getRecommendations(movies,'Just My Luck'))
 print(" ")
 print(" ")
@@ -146,15 +147,25 @@ print(" ")
 print(movies)
 
 
+def calculateSimilarItems(prefs,n=10):
+	#Create dict, which consists of same items as item
+	result={}
 
+	#Change matrix of likes to make lines be items
+	itemPrefs=transformPrefs(prefs)
+	c=0
+	for item in itemPrefs:
+		#Refresh state for big data
+		c+=1
+		if c%100==0: print("%d / %d" % (c,len(itemPrefs)))
+		#Find items as same as item
+		scores=topMatches(itemPrefs,item,n=n,similarity=sim_distance)
+		result[item]=scores
+	return result
 
-
-
-
-
-
-
-
+itemsim=calculateSimilarItems(critics)
+print(" ")
+print(itemsim)
 
 
 
