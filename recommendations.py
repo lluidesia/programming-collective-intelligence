@@ -167,5 +167,52 @@ itemsim=calculateSimilarItems(critics)
 print(" ")
 print(itemsim)
 
+def getRecommendedItems(prefs, itemMatch, user):
+	userRating=prefs[user]
+	scores={}
+	totalSim={}
+
+	#Cycle of items points of this user
+	for (item,rating) in userRating.items():
+		
+		#Cycle of items same as item
+		for (similarity,item2) in itemMatch[item]:
+
+			#Skip if user rated item
+			if item2 in userRating: continue
+
+		#
+			scores.setdefault(item2,0)
+			scores[item2]+=similarity*rating
+
+			#Sum of all coeficients of the saming
+			totalSim.setdefault(item2,0)
+			totalSim[item2]+=similarity
+
+		#
+		#
+			rankings=[(score/totalSim[item],item) for (item,score) in scores.items( )]
+
+		#Return list rankings, from big to small
+			rankings.sort()
+			rankings.reverse()
+			return rankings
+
+print(" ")
+print(getRecommendedItems(critics,itemsim,'Toby'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
