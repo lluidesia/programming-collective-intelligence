@@ -200,10 +200,33 @@ def getRecommendedItems(prefs, itemMatch, user):
 print(" ")
 print(getRecommendedItems(critics,itemsim,'Toby'))
 
+def loadMovieLens(path='C:\Python34\liudaproject\GitHub\programming-collective-intelligence'):
 
+	#get films name
+	movies={}
+	for line in open(path+'/u.item'):
+		(id,title)=line.split('|')[0:2]
+		movies[id]=title
 
+	#load data
+	prefs={}
+	for line in open(path+'/u.data'):
+		(user,movieid,rating,ts)=line.split('\t')
+		prefs.setdefault(user,{})
+		prefs[user][movies[movieid]]=float(rating)
 
-
+	return prefs
+print('')
+prefs=loadMovieLens()
+print(prefs['87'])
+print('')
+print(getRecommendations(prefs,'87')[0:30])
+print('')
+itemsim=calculateSimilarItems(prefs,n=50)
+print(itemsim)
+print('')
+print('')
+print(getRecommendedItems(prefs,itemsim,'87')[0:30])
 
 
 
